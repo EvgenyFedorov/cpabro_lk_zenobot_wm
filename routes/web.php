@@ -59,18 +59,18 @@ Route::group(array('prefix' => '/', 'middleware' => 'auth'), function (){
 
         });
 
-        Route::group(array('prefix' => 'edit', 'middleware' => 'auth'), function (){
-
-            Route::group(array('prefix' => '{id}', 'middleware' => 'auth'), function (){
-
-                Route::get('', [
-                    'uses' => 'User\\Webmaster\\CabinetLogsController@edit',
-                    'middleware' => 'auth'
-                ]);
-
-            });
-
-        });
+//        Route::group(array('prefix' => 'edit', 'middleware' => 'auth'), function (){
+//
+//            Route::group(array('prefix' => '{id}', 'middleware' => 'auth'), function (){
+//
+//                Route::get('', [
+//                    'uses' => 'User\\Webmaster\\CabinetLogsController@edit',
+//                    'middleware' => 'auth'
+//                ]);
+//
+//            });
+//
+//        });
 
         Route::group(array('prefix' => 'update', 'middleware' => 'auth'), function (){
 

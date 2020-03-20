@@ -174,13 +174,17 @@ class CabinetLogsController extends UserController
     {
         if($result = $this->isRole()){
 
-            $edit_job = $this->jobs()->getEditOne($id);
-            $programs = $this->programs()->getEditJob();
-
-            return view($result['role']['dir'] . '.logs.edit', [
-                'programs' => $programs,
-                'edit_job' => $edit_job[0],
-            ]);
+//            $accesses = User::find($result['user']->id)->accesses;
+//            $privileges = json_decode($accesses->privileges);
+//
+//            $programs = $this->programs()->getEditJob($privileges->show_programs);
+//
+//            $edit_job = $this->jobs()->getEditOne($id);
+//
+//            return view($result['role']['dir'] . '.logs.edit', [
+//                'programs' => $programs,
+//                'edit_job' => $edit_job[0],
+//            ]);
 
         }else{
             return redirect('/logout');

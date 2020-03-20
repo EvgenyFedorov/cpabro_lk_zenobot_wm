@@ -57,7 +57,7 @@
 
                                         <tr id="tr_job_{{$data_job->jobs_id}}" class="{{$class}}">
                                             <td>
-                                                <a href="{{url('/logs/edit/' . $data_job->jobs_id)}}">{{$data_job->jobs_id}}</a>
+                                                {{$data_job->jobs_id}}
                                             </td>
 {{--                                            <td>--}}
 {{--                                                <a target="_blank" href="{{url('/programs/edit/' . $data_job->programs_id)}}">{{$data_job->programs_name}}</a>--}}
