@@ -12,7 +12,7 @@ class Jobs extends Model
 
     public function getEdit($id){
         return DB::table('jobs')
-            ->select('jobs.id as jobs_id','jobs.created_at as jobs_created_at','jobs.updated_at as jobs_updated_at','jobs.deleted_at as jobs_deleted_at',
+            ->select('jobs.id as jobs_id','jobs.created_at as jobs_created_at','jobs.updated_at as jobs_updated_at','jobs.deleted_at as jobs_deleted_at', 'jobs.enable as jobs_enable', 'jobs.code_id', 'jobs.status', 'jobs.enable',
                 'programs.id as programs_id', 'name','bot_name',
                 'jobs.code_id', 'jobs.status')
             ->leftJoin('programs', 'jobs.program_id', '=', 'programs.id')
