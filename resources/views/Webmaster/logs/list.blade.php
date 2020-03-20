@@ -87,7 +87,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="7" style="text-align: center;">Пользователей не найдено!</td>
+                                        <td colspan="7" style="text-align: center;">Заданий не найдено!</td>
                                     </tr>
                                 @endif
                                 <tr>
