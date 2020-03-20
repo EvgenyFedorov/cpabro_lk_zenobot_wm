@@ -37,7 +37,7 @@ class CabinetLogsController extends UserController
 
         if($result = $this->isRole()){
 
-            $data_jobs = $this->jobs()->getAll();
+            $data_jobs = $this->jobs()->getEdit($result['user']->id);
 
             return view($result['role']['dir'] . '.logs.list', [
                 'user' => $result['user'],
