@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Users\Accesses;
 use App\Models\Users\Programs;
 use App\Models\Users\Roles;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -39,6 +40,8 @@ class CabinetUsersController extends UserController
 
         if($result = $this->isRole()){
 
+            $response = $this->response()->Json()->getResult();
+
             $edit_user = $this->users()->getEdit($result['user']->id);
             $edit_user[0]->privileges = json_decode($edit_user[0]->privileges);
 
@@ -49,7 +52,8 @@ class CabinetUsersController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -111,7 +115,8 @@ class CabinetUsersController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -167,7 +172,8 @@ class CabinetUsersController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -190,7 +196,8 @@ class CabinetUsersController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
 
     }
@@ -208,7 +215,8 @@ class CabinetUsersController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 }

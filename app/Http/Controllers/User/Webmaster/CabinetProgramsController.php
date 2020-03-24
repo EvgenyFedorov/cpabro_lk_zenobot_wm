@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserController;
 use App\Models\User;
 use App\Models\Users\Accesses;
 use App\Models\Users\Programs;
+use Auth;
 use Composer\DependencyResolver\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +55,7 @@ class CabinetProgramsController extends UserController
             ]);
 
         }else{
+            Auth::logout();
             return redirect('/access-denied');
         }
     }
@@ -76,7 +78,8 @@ class CabinetProgramsController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -209,7 +212,8 @@ class CabinetProgramsController extends UserController
             }
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -226,7 +230,8 @@ class CabinetProgramsController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -251,7 +256,8 @@ class CabinetProgramsController extends UserController
             ]);
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -441,7 +447,8 @@ class CabinetProgramsController extends UserController
             }
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 
@@ -464,7 +471,8 @@ class CabinetProgramsController extends UserController
             return $response->jsonEncode();
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
 
     }
@@ -482,7 +490,8 @@ class CabinetProgramsController extends UserController
 
 
         }else{
-            return redirect('/logout');
+            Auth::logout();
+            return redirect('/access-denied');
         }
     }
 }

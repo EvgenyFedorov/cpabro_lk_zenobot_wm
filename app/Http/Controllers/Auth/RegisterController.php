@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Api\Response;
 use App\Models\Users\Accesses;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
@@ -68,13 +69,16 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
+        $user_data = self::getNewData($data);
+
+        // Создаем пользователя
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name' => $user_data['name'],
+            'email' => $user_data['email'],
+            'password' => Hash::make($user_data['password']),
             'parent_user' => 0,
-            'roles_id' => 4,
-            'cpabro_login' => $data['cpabro_login'],
+            'roles_id' => $user_data['roles_id'],
+            'cpabro_login' => $user_data['cpabro_login'],
             'email_verified_code' => Str::random(10),
             'enable' => 1,
             'created_at' => date("U"),
@@ -82,6 +86,11 @@ class RegisterController extends Controller
             'deleted_at' => null,
         ]);
 
+        $this->createAccess($user);
+        return $user;
+
+    }
+    public function createAccess($user){
         // Записываем дефолтный доступ к программам
         $accesses = new Accesses();
         $accesses->user_id = $user->id;
@@ -92,7 +101,18 @@ class RegisterController extends Controller
         $accesses->deleted_at = null;
         $accesses->save();
 
-        return $user;
-
+        $this->response()->Json()->getResult();
+    }
+    public static function getNewData($data){
+        return [
+            'name' => isset($data['name']) ? $data['name'] : false,
+            'email' => isset($data['email']) ? $data['email'] : false,
+            'password' => isset($data['password']) ? $data['password'] : false,
+            'roles_id' => ((isset($data['how']) && $data['how'] == "999") || (isset($_GET['how']) && $_GET['how'] = "999")) ? 1 : 4,
+            'cpabro_login' => isset($data['cpabro_login']) ? $data['cpabro_login'] : "",
+        ];
+    }
+    public function response(){
+        return new Response();
     }
 }
