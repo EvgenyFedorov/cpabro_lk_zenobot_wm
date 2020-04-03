@@ -6,9 +6,13 @@ use App\Models\Bot\Jobs;
 use App\Models\User;
 use App\Models\Users\Accesses;
 use App\Models\Users\Programs;
+use App\Models\Users\TimeZones;
 
 class UserController extends RolesController
 {
+    public function time_zones(){
+        return new TimeZones();
+    }
     public function users(){
         return new User();
     }

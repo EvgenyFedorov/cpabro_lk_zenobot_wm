@@ -10,6 +10,38 @@ use Illuminate\Database\Eloquent\Model;
 class Jobs extends Model
 {
 
+    private $id = null;
+    private $program_id = null;
+    private $user_id = null;
+    private $code_id = null;
+    private $status = null;
+    private $enable = null;
+    private $created_at = null;
+    private $updated_at = null;
+    private $deleted_at = null;
+
+    public $text = null;
+    public $class = null;
+    public $style = null;
+
+    public $job_statuses = [
+        [
+            'text' => 'Ожидает',
+            'class' => 'btn-info',
+            'style' => 'cursor: no-drop;'
+        ],
+        [
+            'text' => 'Отгружен',
+            'class' => 'btn-success',
+            'style' => 'cursor: help;'
+        ],
+        [
+            'text' => 'Неуспешно',
+            'class' => 'btn-danger',
+            'style' => 'cursor: help;'
+        ],
+    ];
+
     public function getEdit($id){
         return DB::table('jobs')
             ->select('jobs.id as jobs_id','jobs.created_at as jobs_created_at','jobs.updated_at as jobs_updated_at','jobs.deleted_at as jobs_deleted_at', 'jobs.enable as jobs_enable', 'jobs.code_id', 'jobs.status', 'jobs.enable',

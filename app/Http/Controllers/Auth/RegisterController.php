@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Api\Response;
 use App\Models\Users\Accesses;
+use App\Models\Users\TimeZones;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -57,6 +58,14 @@ class RegisterController extends Controller
             'cpabro_login' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'time_zone_id' => ['required']
+        ]);
+    }
+
+    public function showRegistrationForm(TimeZones $timeZones)
+    {
+        return view('auth.register', [
+            'time_zones' => $timeZones->getAll()
         ]);
     }
 
@@ -79,6 +88,7 @@ class RegisterController extends Controller
             'parent_user' => 0,
             'roles_id' => $user_data['roles_id'],
             'cpabro_login' => $user_data['cpabro_login'],
+            'time_zone_id' => $user_data['time_zone_id'],
             'email_verified_code' => Str::random(10),
             'enable' => 1,
             'created_at' => date("U"),
@@ -110,6 +120,7 @@ class RegisterController extends Controller
             'password' => isset($data['password']) ? $data['password'] : false,
             'roles_id' => ((isset($data['how']) && $data['how'] == "999") || (isset($_GET['how']) && $_GET['how'] = "999")) ? 1 : 4,
             'cpabro_login' => isset($data['cpabro_login']) ? $data['cpabro_login'] : "",
+            'time_zone_id' => isset($data['time_zone_id']) ? $data['time_zone_id'] : "",
         ];
     }
     public function response(){

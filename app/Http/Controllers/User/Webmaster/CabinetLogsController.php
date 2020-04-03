@@ -8,6 +8,8 @@ use App\Http\Controllers\User\UserController;
 use App\Models\Bot\Jobs;
 use App\Models\User;
 use App\Models\Users\Accesses;
+use App\Models\Users\TimeZones;
+use App\Repositories\Job\JobRepository;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -28,22 +30,23 @@ class CabinetLogsController extends UserController
         return ($url == null) ? redirect('/users') : redirect($url);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(JobRepository $jobRepository)
     {
 
         if($result = $this->isRole()){
 
-            $data_jobs = $this->jobs()->getEdit($result['user']->id);
+            //$data_jobs = $this->jobs()->getEdit($result['user']->id);
+            $time_zone = TimeZones::find($result['user']->time_zone_id);
+
+            $data_jobs = $jobRepository->getData(null, $result['user']->id);
+            $job_statuses = $jobRepository->getStatuses();
 
             return view($result['role']['dir'] . '.logs.list', [
                 'user' => $result['user'],
                 'role' => $result['role'],
-                'data_jobs' => $data_jobs
+                'data_jobs' => $data_jobs,
+                'time_zone' => $time_zone,
+                'job_statuses' => $job_statuses
             ]);
 
         }else{

@@ -100,6 +100,7 @@ $(document).ready(function(){
                 name: $('#name').val(),
                 email: $('#email').val(),
                 cpabro_login: $('#cpabro_login').val(),
+                user_time_zone: $('#user_time_zone').val(),
                 password: $('#password').val(),
                 password_confirm: $('#password-confirm').val(),
                 response_type: "json"
@@ -142,5 +143,11 @@ $(document).ready(function(){
         }
         return pass;
     }
+
+    $('#select_time_zone_id').change(function () {
+
+        $('#time_zone_id').val($(this).val());
+
+    });
 
 });

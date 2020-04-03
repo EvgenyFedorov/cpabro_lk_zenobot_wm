@@ -47,6 +47,38 @@
 {{--                                    <th>Изменен</th>--}}
 {{--                                    <th>Вкл/Выкл</th>--}}
                                 </tr>
+                                <?php
+
+                                /*
+                                 * Отсчитываем время исходя из настроек юзера
+                                 * */
+
+                                    $sh = 3600; // секунд в часе
+                                    $sm = 60; // секунд в минуте
+                                    $mat_operator = null; // математический оператор
+                                    $datetime = 0; // Сколько часов и минут нужно вычесть или прибавить
+
+                                    if($time_zone->timezone_utc != "UTC"){
+
+                                        // Берем математический оператор сложения или вычитания
+                                        preg_match('/(\+|\-)/', $time_zone->timezone_utc, $result_symbol);
+                                        $mat_operator = $result_symbol[0];
+
+                                        // Проверяем ровно ли часов или с минутами
+                                        preg_match('/[0-9\:]{1,5}/', $time_zone->timezone_utc, $result_hours);
+
+                                        $explode_hours = explode(":", $result_hours[0]);
+
+                                        if(isset($explode_hours[0])){
+                                            $datetime = $datetime + ($sh * $explode_hours[0]);
+                                        }
+                                        if(isset($explode_hours[1])){
+                                            $datetime = $datetime + ($sm * $explode_hours[1]);
+                                        }
+
+                                    }
+
+                                ?>
                                 @if(isset($data_jobs) AND count($data_jobs) > 0)
 
                                     @foreach($data_jobs as $data_job)
@@ -65,24 +97,54 @@
                                             <td>{{$data_job->bot_name}}</td>
                                             <td>{{$data_job->code_id}}</td>
                                             <td>
-                                                @if($data_job->status == 0)
-                                                    Ожидает
+                                            @if(isset($job_statuses[$data_job->status]))
+                                                <!-- Кнопка запуска модального окна -->
+                                                    <div class="open_log btn {{$job_statuses[$data_job->status]->class}}" data-toggle="modal" data-target="#myModal{{$data_job->jobs_id}}">
+                                                        {{$job_statuses[$data_job->status]->text}}
+                                                    </div>
+
+                                                    <!-- Модальное окно -->
+                                                    <div class="modal fade" id="myModal{{$data_job->jobs_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h4 style="display: block; text-align: center;" class="modal-title" id="myModalLabel">Задача №{{$data_job->jobs_id}}</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    @if(isset($data_job->log_desc) && !empty($data_job->log_desc))
+                                                                        {{$data_job->log_desc}}
+                                                                    @else
+                                                                        {{$job_statuses[$data_job->status]->text}}
+                                                                    @endif
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @else
-                                                    Отгружен
+                                                    <div>
+                                                        <div class="btn btn-default">Не определено</div>
+                                                    </div>
                                                 @endif
                                             </td>
-                                            <td>{{$data_job->jobs_created_at}}</td>
-{{--                                            <td>{{$data_job->jobs_updated_at}}</td>--}}
-{{--                                            <td>--}}
-{{--                                                <label class="switch">--}}
-{{--                                                    @if($data_job->enable == 1)--}}
-{{--                                                        <input class="jobs_enable" id="{{$data_job->jobs_id}}" type="checkbox" checked>--}}
-{{--                                                    @else--}}
-{{--                                                        <input class="jobs_enable" id="{{$data_job->jobs_id}}" type="checkbox">--}}
-{{--                                                    @endif--}}
-{{--                                                    <span class="slider round"></span>--}}
-{{--                                                </label>--}}
-{{--                                            </td>--}}
+                                            <td>
+                                                @if(isset($time_zone->timezone_utc) && !empty($time_zone->timezone_utc))
+                                                    @if($mat_operator == "-")
+                                                        {{date("Y-m-d H:i:s", strtotime($data_job->jobs_created_at) - $datetime)}}
+                                                    @elseif($mat_operator == "+")
+                                                        {{date("Y-m-d H:i:s", strtotime($data_job->jobs_created_at) + $datetime)}}
+                                                    @else
+                                                        {{$data_job->jobs_created_at}}
+                                                    @endif
+                                                @else
+                                                    {{$data_job->jobs_created_at}}
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
