@@ -77,7 +77,7 @@
 
                                     <div class="col-md-6">
 
-                                        <select id="user_time_zone" class="selectpicker form-control" title="Поиск по часовому поиску" data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
+                                        <select id="user_time_zone" class="selectpicker form-control" title="Поиск по часовому поясу" data-actions-box="true" data-live-search="true" style="font-size: 16px; height: 45px;">
                                             @foreach($time_zones as $time_zone)
                                                 @if($time_zone->id == $edit_user->time_zone_id)
                                                     <option data-tokens="mustard" style="font-size: 16px;" selected value="{{$time_zone->id}}">{{$time_zone->name_ru}}:&nbsp;({{$time_zone->timezone_utc}})&nbsp;{{$time_zone->timezone_name}}</option>
